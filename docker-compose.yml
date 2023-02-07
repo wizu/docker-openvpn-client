@@ -1,13 +1,16 @@
 services:
   openvpn-client:
-    image: ghcr.io/wfg/openvpn-client:latest
+    build:
+      context: ./build
     container_name: openvpn-client
-    cap_add:
-      - NET_ADMIN
+    network_mode: "host"
+    privileged: true
     devices:
       - /dev/net/tun:/dev/net/tun
     environment:
       - ALLOWED_SUBNETS=192.168.10.0/24
+      - CONFIG_FILE=gate_openvpn_remote_access_l3.ovpn
+      - AUTH_SECRET=
     volumes:
       - ./local:/config
-    restart: unless-stopped
+    restart: on-failure
