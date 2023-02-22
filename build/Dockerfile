@@ -1,5 +1,7 @@
 FROM ubuntu:latest
 
+COPY sources.list /etc/apt/sources.list
+
 RUN apt-get update
 RUN apt-get install -y wget gcc build-essential libssl-dev net-tools liblzo2-dev libpam0g-dev
 
@@ -24,7 +26,8 @@ RUN make install
 WORKDIR ../
 RUN rm openvpn-2.4.7.tar.gz
 
-COPY . /usr/local/bin
+COPY entry.sh /usr/local/bin/entry.sh
+COPY killswitch.sh /usr/local/bin/killswitch.sh
 
 ENV KILL_SWITCH=on
 
